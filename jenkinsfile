@@ -11,15 +11,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo '🏗️ Construyendo la imagen Docker...'
-                sh 'pip install -r requirements.txt'
+                echo '🏗️ Creando entorno virtual e instalando dependencias...'
+                sh '''
+                    python3 -m venv venv
+                    ./venv/bin/pip install --upgrade pip
+                    ./venv/bin/pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Test') {
             steps {
                 echo '🧪 Ejecutando pruebas unitarias...'
-                sh 'pytest tests/ --cov=app --cov-report=term-missing'
+                sh './venv/bin/pytest tests/ --cov=app'
             }
         }
 
