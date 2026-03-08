@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'python:3.9-slim' }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -21,7 +19,6 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Ejecutando pruebas unitarias...'
-                sh 'pip install pytest pytest-cov'
                 sh 'pytest tests/ --cov=app --cov-report=term-missing'
             }
         }
