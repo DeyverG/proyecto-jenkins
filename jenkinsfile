@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '📥 Obteniendo código fuente del repositorio...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo '🏗️ Construyendo la imagen Docker...'
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '🧪 Ejecutando pruebas unitarias...'
+                sh 'pytest tests/ --cov=app --cov-report=term-missing'
+            }
+        }
+
+        stage('Deploy Simulation') {
+            steps {
+                echo '🚀 Simulando despliegue...'
+                echo "Versión desplegada: build #${env.BUILD_NUMBER}"
+                echo '✅ Despliegue simulado exitosamente'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completado exitosamente.'
+        }
+        failure {
+            echo '❌ El pipeline ha fallado.'
+        }
+    }
+}
