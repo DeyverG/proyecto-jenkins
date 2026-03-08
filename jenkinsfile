@@ -12,18 +12,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🏗️ Creando entorno virtual e instalando dependencias...'
-                sh '''
-                    python3 -m venv venv
-                    ./venv/bin/pip install --upgrade pip
-                    ./venv/bin/pip install -r requirements.txt
-                '''
+                sh 'pip install --break-system-packages -r requirements.txt'
             }
         }
 
         stage('Test') {
             steps {
                 echo '🧪 Ejecutando pruebas unitarias...'
-                sh './venv/bin/pytest tests/ --cov=app'
+                sh 'pytest tests/ --cov=app --break-system-packages'
             }
         }
 
